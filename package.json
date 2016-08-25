@@ -1,0 +1,15 @@
+{
+  "name": "gateway-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gateway-cli.js",
+  "scripts": {
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "msgpack-lite": "^0.1.20"
+  }
+}
