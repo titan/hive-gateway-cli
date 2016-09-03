@@ -1,14 +1,14 @@
 DISTDIR=.
 SRCDIR=./src
-TARGET=$(DISTDIR)/gateway.js
+TARGET=$(DISTDIR)/gateway-cli.js
 NPM=cnpm
 
 all: $(TARGET)
 
-$(TARGET): $(SRCDIR)/gateway.ts
+$(TARGET): $(SRCDIR)/gateway-cli.ts
 	tsc || rm $(TARGET)
 	
-$(SRCDIR)/gateway.ts: node_modules typings
+$(SRCDIR)/gateway-cli.ts: node_modules typings
 
 node_modules:
 	$(NPM) install
