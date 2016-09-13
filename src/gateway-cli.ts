@@ -12,7 +12,12 @@ function collect(val, args) {
       args.push(val);
     }
   } else {
-    args.push(num);
+    let str = num + ''; 
+    if (str.length == val.length) {
+      args.push(num);
+    } else {
+      args.push(val);
+    }
   }
   return args;
 }
@@ -25,7 +30,7 @@ program
 .option('-o, --openid <openid>', 'OpenID of user', '')
 .option('-m, --mod [mod]', 'Module')
 .option('-f, --fun [fun]', 'Function to call')
-.option('-a, --arg [value]', 'Arguments to function', collect, [])
+.option('-a, --arg [value]', 'String arguments to function', collect, [])
 .parse(process.argv);
 
 let opts = program.opts();
