@@ -2,35 +2,15 @@ import * as http from 'http';
 import * as msgpack from 'msgpack-lite';
 import * as program from 'commander';
 
-function collect(val, args) {
-  let num = Number.parseFloat(val);
-  if (Number.isNaN(num)) {
-    try {
-      let j = JSON.parse(val);
-      args.push(j);
-    } catch (e) {
-      args.push(val);
-    }
-  } else {
-    let str = num + ''; 
-    if (str.length == val.length) {
-      args.push(num);
-    } else {
-      args.push(val);
-    }
-  }
-  return args;
-}
-
 program
 .version('1.0.0')
 .option('-H, --host <host>', 'Host address of gateway', 'localhost')
-.option('-p, --port <port>', 'Port of gateway', 8000)
+.option('-p, --port <port>', 'Port of gateway', 80)
 .option('-P, --path <path>', 'Path of gateway', '/')
 .option('-o, --openid <openid>', 'OpenID of user', '')
 .option('-m, --mod [mod]', 'Module')
 .option('-f, --fun [fun]', 'Function to call')
-.option('-a, --arg [value]', 'String arguments to function', collect, [])
+.option('-a, --arg [value]', 'JSON arguments to function')
 .parse(process.argv);
 
 let opts = program.opts();
@@ -46,7 +26,7 @@ if (!opts["fun"]) {
 let data: Buffer = msgpack.encode({
   "mod": opts["mod"],
   "fun": opts["fun"],
-  "arg": opts["arg"],
+  "arg": JSON.parse(opts["arg"]),
   "ctx": {
     "wxuser": opts["openid"]
   }
