@@ -26,7 +26,7 @@ if (!opts["fun"]) {
 let data: Buffer = msgpack.encode({
   "mod": opts["mod"],
   "fun": opts["fun"],
-  "arg": JSON.parse(opts["arg"]),
+  "arg": opts["arg"] ? JSON.parse(opts["arg"]) : null,
   "ctx": {
     "wxuser": opts["openid"]
   }
