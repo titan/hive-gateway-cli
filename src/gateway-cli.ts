@@ -51,9 +51,14 @@ let req = http.request(options, (rep) => {
     chunks.push(chunk);
   });
   rep.on('end', () => {
-    let buffer = Buffer.concat(chunks);
-    let msg = msgpack.decode(buffer);
-    console.log(`BODY: ${JSON.stringify(msg)}`);
+    if (rep.statusCode < 300) {
+      let buffer = Buffer.concat(chunks);
+      let msg = msgpack.decode(buffer);
+      console.log(`BODY: ${JSON.stringify(msg)}`);
+    } else {
+      let buffer = Buffer.concat(chunks);
+      console.log(`BODY: ${buffer.toString()}`);
+    }
   });
 });
 
