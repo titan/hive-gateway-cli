@@ -11,6 +11,7 @@ program
 .option('-m, --mod [mod]', 'Module')
 .option('-f, --fun [fun]', 'Function to call')
 .option('-a, --arg [value]', 'JSON arguments to function')
+.option('-v, --verbose', 'Verbose output')
 .parse(process.argv);
 
 let opts = program.opts();
@@ -44,8 +45,10 @@ let options = {
 };
 
 let req = http.request(options, (rep) => {
-  console.log(`STATUS: ${rep.statusCode}`);
-  console.log(`HEADERS: ${JSON.stringify(rep.headers)}`);
+  if (opts.verbose) {
+    console.log(`STATUS: ${rep.statusCode}`);
+    console.log(`HEADERS: ${JSON.stringify(rep.headers)}`);
+  }
   let chunks: Buffer[] = [];
   rep.on('data', (chunk) => {
     chunks.push(chunk);
@@ -54,10 +57,18 @@ let req = http.request(options, (rep) => {
     if (rep.statusCode < 300) {
       let buffer = Buffer.concat(chunks);
       let msg = msgpack.decode(buffer);
-      console.log(`BODY: ${JSON.stringify(msg)}`);
+      if (opts.verbose) {
+        console.log(`BODY: ${JSON.stringify(msg)}`);
+      } else {
+        console.log(JSON.stringify(msg));
+      }
     } else {
       let buffer = Buffer.concat(chunks);
-      console.log(`BODY: ${buffer.toString()}`);
+      if (opts.verbose) {
+        console.log(`BODY: ${buffer.toString()}`);
+      } else {
+        console.log(buffer.toString());
+      }
     }
   });
 });
