@@ -1,7 +1,0 @@
-{
-  "globalDependencies": {
-    "commander": "registry:dt/commander#2.3.0+20160317120654",
-    "msgpack-lite": "http://git.fengchaohuzhu.com:10080/Titan/typescript.d.ts/raw/master/msgpack-lite.d.ts",
-    "node": "registry:dt/node#6.0.0+20160823142437"
-  }
-}

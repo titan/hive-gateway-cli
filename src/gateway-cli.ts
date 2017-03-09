@@ -51,7 +51,8 @@ let req = http.request(options, (rep) => {
   }
   let chunks: Buffer[] = [];
   rep.on('data', (chunk) => {
-    chunks.push(chunk);
+    const data: Buffer = chunk as Buffer;
+    chunks.push(data);
   });
   rep.on('end', () => {
     if (rep.statusCode < 300) {

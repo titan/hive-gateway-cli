@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "gateway-cli.js",
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "commander": "^2.9.0",
-    "msgpack-lite": "^0.1.20"
+    "msgpack-lite": "^0.1.26"
+  },
+  "devDependencies": {
+    "@types/commander": "^2.3.31",
+    "@types/msgpack-lite": "^0.1.3"
   }
 }
