@@ -2,6 +2,30 @@ import * as http from 'http';
 import * as msgpack from 'msgpack-lite';
 import * as program from 'commander';
 
+function convert_date(json) {
+  if (json instanceof Array) {
+    const items = [];
+    for (const i of json) {
+      items.push(convert_date(i));
+    }
+    return items;
+  } else if (typeof(json) === 'number') {
+    return json;
+  } else if (typeof(json) === 'string') {
+    if (json.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.*Z/)) {
+      return new Date(json);
+    } else {
+      return json;
+    }
+  } else {
+    const item = {};
+    for (const key of Object.keys(json)) {
+      item[key] = convert_date(json[key]);
+    }
+    return item;
+  }
+}
+
 program
 .version('1.0.0')
 .option('-H, --host <host>', 'Host address of gateway', 'localhost')
@@ -14,7 +38,7 @@ program
 .option('-v, --verbose', 'Verbose output')
 .parse(process.argv);
 
-let opts = program.opts();
+const opts = program.opts();
 
 if (!opts["mod"]) {
   program.missingArgument("mod");
@@ -24,16 +48,18 @@ if (!opts["fun"]) {
   program.missingArgument("fun");
 }
 
-let data: Buffer = msgpack.encode({
+console.log(JSON.stringify(convert_date(JSON.parse(opts["arg"]))));
+
+const data: Buffer = msgpack.encode({
   "mod": opts["mod"],
   "fun": opts["fun"],
-  "arg": opts["arg"] ? JSON.parse(opts["arg"]) : null,
+  "arg": opts["arg"] ? convert_date(JSON.parse(opts["arg"])) : null,
   "ctx": {
     "wxuser": opts["openid"]
   }
 });
 
-let options = {
+const options = {
   hostname: opts["host"],
   port: opts["port"],
   path: opts["path"],
