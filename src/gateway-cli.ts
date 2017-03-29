@@ -48,8 +48,6 @@ if (!opts["fun"]) {
   program.missingArgument("fun");
 }
 
-console.log(JSON.stringify(convert_date(JSON.parse(opts["arg"]))));
-
 const data: Buffer = msgpack.encode({
   "mod": opts["mod"],
   "fun": opts["fun"],
